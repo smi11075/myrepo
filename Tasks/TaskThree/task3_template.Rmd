@@ -1,0 +1,77 @@
+---
+title: "Exploratory Data Analysis"
+author: "ted smith"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+output:
+  html_document:  
+    keep_md: true
+    toc: true
+    toc_float: true
+    fig_height: 6
+    fig_width: 12
+    fig_align: 'center'
+---
+
+```{r, echo=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE)
+```
+
+## Reading Notes
+
+Replace this text with your reading notes.
+
+## EDA Example
+
+The code below is an example of the EDA process using the `starwars` data from the `tidyverse` package. (Make sure you have the `tidyverse` package installed!)
+
+Run the code line-by-line and look at the output. Add a comment to each line of code that explains what it does/what insights it provides.
+
+```{r}
+library(tidyverse)
+
+dim(starwars) #States size of data frame. 87 x 14 87 rows and 14 columns
+colnames(starwars) #Gives us the column names for the starwars data frame
+
+head(starwars) #Displays the top rows of each column within the data frame
+glimpse(starwars) #Reports to us number of rows and columns along with displaying the columns on the far left in rows, and rows as columns.
+
+?starwars #Brings up the help pane discussing starwars documentation
+
+starwars %>% count(species) #The pipe operator allows us to use the count function on the starwars data frame to have a count of individual species within the species field.
+
+mean(starwars$height) #Using the mean function to look at the starwars data frame 'height' column with the extraction operator.
+mean(starwars$height, na.rm = TRUE) #'na.rm' is a parameter telling the mean function to skip over any NULL cells.
+
+summary(starwars$height) #gives results of the summary statistics. If it is a number it gives min, 1st Quartile, Median, 3rd Quartile, Max, and NA's. If the summary is of a field that is a CHAR, it tells the number of rows, Class, and Mode.
+
+
+cm_to_ft <- function(cm){
+  ft = cm / 30.48
+  return(ft)
+}
+
+starwars_2 <- starwars %>% mutate(height_ft = cm_to_ft(height)) #The mutate function is using the cm_to_ft function to create a new column 'height_ft' in the starwars data frame. It is then reassigned starwars_2
+ 
+dim(starwars_2) #States size of data frame. 87 x 15 87 rows and 15 columns
+colnames(starwars_2)#Gives us the column names for the starwars_2 data frame
+
+summary(starwars_2$height_ft)#gives the summary statistics for the new height_ft column
+
+ggplot(starwars_2, aes(height_ft)) + 
+  geom_histogram() #This is visualizing the data using a histogram with height_ft on the y-axis and count on the x axis.
+
+starwars_2 %>% filter(height_ft == max(height_ft)) #We use the starwars_2 data set and use the filter function to look through the height_ft column. Then use the max function to find the person with the tallest height.
+starwars_2 %>% filter(height_ft == max(height_ft, na.rm = TRUE))#We needed to use na.rm to get rid of the NULLs to be able to find the true max.
+
+# https://starwars.fandom.com/wiki/Yarael_Poof
+```
+
+## EDA Practice
+
+Continue exploring the `starwars` data to gain additional insights, using [R4DS: Chapter 7](https://r4ds.had.co.nz/exploratory-data-analysis.html) as a guide.
+
+It is ok if you don't understand the all code in Chapter 7. (That is what we'll be learning the next two weeks!) If writing your own code is a struggle, try the "copy, paste, and tweak" method.
+
+```{r}
+# your code goes here
+```
