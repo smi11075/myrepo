@@ -56,11 +56,19 @@ ggplot(data = rcw,
                   #geom_point is adding points to the graph
 
 
+
+
+#Facet Wrap
 ggplot(data = rcw,
-       mapping = aes(x = Department,
+       mapping = aes(x = Semester,
                      y = Count,
-                     color = Department)) +
-  geom_bar(stat='identity')
+                     fill = Semester_Date)) +
+  geom_bar(stat = 'identity') +
+  facet_wrap(~Department, ncol = 4)
+
+
+
+
 
 ```
 

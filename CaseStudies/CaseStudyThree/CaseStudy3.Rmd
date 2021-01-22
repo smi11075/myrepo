@@ -40,19 +40,69 @@ _Place Task Background Here_
 
 ```{r tidy_data}
 # Use this R-Chunk to clean & wrangle your data!
-NoKU <- gapminder %>% 
+
+Distinct <- data %>% 
+  distinct(country, continent) %>% 
+  group_by(continent) %>% 
+  count(continent)
+
+names(Distinct) = c("Continent", "CountryCount")
+
+Distinct
+
+PopYear <- data %>% 
+  group_by(year) 
+
+PopYear <- aggregate(PopYear$pop, by=list(year=PopYear$year), FUN=sum)
+  
+names(PopYear) = c("Year", "Population")
+
+PopYear
+
+NoKU <- data %>% 
   filter(country != 'Kuwait')
 
 NoKU
+
+
 ```
 
 ## Data Visualization
 
 ```{r plot_data}
 # Use this R-Chunk to plot & visualize your data!
+G1 <- ggplot(data = Distinct,
+             mapping = aes(x = Continent,
+                           y = CountryCount,
+                           fill = Continent)) +
+  geom_col() +
+  theme_bw()+
+  labs(x = 'Continent',
+       y = 'Number of Countries',
+       title = 'Case Study 3',
+       subtitle = 'Number of Countries Per Continent',
+       caption = 'Qualitative')
+
+G1
+G1Save <- ggsave("G1.png", width = 15, units = "in")
+
+G2 <- ggplot(data = PopYear,
+             mapping = aes(x = Year,
+                           y = Population)) +
+  geom_line() +
+  geom_point() +
+  scale_x_continuous(breaks = c(1952, 1957, 1962, 1967, 1972, 1977, 1982, 1987, 1992, 1997, 2002, 2007)) +
+  scale_y_continuous(breaks = c(3000000000, 4000000000, 5000000000, 6000000000), labels = c(3, 4, 5, 6)) +
+  labs(y = "Population (Billion)")
+  
+
+G2
+G2Save <- ggsave("G2.png", width = 15, units = "in")
+
+
 
 #Base Graph
-G3 <- ggplot(data = NoKU,
+G4 <- ggplot(data = NoKU,
        mapping = aes(x = lifeExp,
                      y = gdpPercap,
                      color = continent,
@@ -68,9 +118,18 @@ G3 <- ggplot(data = NoKU,
                 subtitle = "A Look at Life Expectancy and GDP Per Capita*",
                 caption = "*Sans Kuwait",
                 color = "Continent",
-                size = "Population (100k)") 
+                size = "Population (100k)") +
+  scale_size_area(breaks = c(250000000,500000000,750000000,1000000000,1250000000), labels = c(2500, 5000, 7500, 10000, 12500))
 
-G3
+G4
+
+
+
+
+
+
+G4Save <- ggsave("G4.png", width = 15, units = "in")
+        
   
 
 ```

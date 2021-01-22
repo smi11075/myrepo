@@ -1,7 +1,7 @@
 ---
 title: "Task 6"
 author: "TedSmith"
-date: "January 20, 2021"
+date: "January 21, 2021"
 output:
   html_document:  
     keep_md: true
@@ -68,11 +68,15 @@ ggplot(data = rcw,
                   #geom_point is adding points to the graph
 
 
+
+
+#Facet Wrap
 ggplot(data = rcw,
-       mapping = aes(x = Department,
+       mapping = aes(x = Semester,
                      y = Count,
-                     color = Department)) +
-  geom_bar(stat='identity')
+                     fill = Semester_Date)) +
+  geom_bar(stat = 'identity') +
+  facet_wrap(~Department, ncol = 4)
 ```
 
 ![](TaskSix_files/figure-html/plot_data-2.png)<!-- -->

@@ -32,7 +32,32 @@ _Place Task Background Here_
 
 ```r
 # Use this R-Chunk to clean & wrangle your data!
-NoKU <- gapminder %>% 
+
+
+Distinct <- data %>% 
+  distinct(country, continent) %>% 
+  group_by(continent) %>% 
+  count(continent)
+
+names(Distinct) = c("Continent", "CountryCount")
+
+Distinct
+```
+
+```
+## # A tibble: 5 x 2
+## # Groups:   Continent [5]
+##   Continent CountryCount
+##   <fct>            <int>
+## 1 Africa              52
+## 2 Americas            25
+## 3 Asia                33
+## 4 Europe              30
+## 5 Oceania              2
+```
+
+```r
+NoKU <- data %>% 
   filter(country != 'Kuwait')
 
 NoKU
@@ -60,7 +85,25 @@ NoKU
 
 ```r
 # Use this R-Chunk to plot & visualize your data!
+G1 <- ggplot(data = Distinct,
+             mapping = aes(x = Continent,
+                           y = CountryCount,
+                           fill = Continent)) +
+  geom_col() +
+  theme_bw()+
+  labs(x = 'Continent',
+       y = 'Number of Countries',
+       title = 'Case Study 3',
+       subtitle = 'Number of Countries Per Continent',
+       caption = 'Qualitative')
 
+G1
+```
+
+![](CaseStudy3_files/figure-html/plot_data-1.png)<!-- -->
+
+```r
+G1Save <- ggsave("G1.png", width = 15, units = "in")
 #Base Graph
 G3 <- ggplot(data = NoKU,
        mapping = aes(x = lifeExp,
@@ -83,6 +126,15 @@ G3 <- ggplot(data = NoKU,
 G3
 ```
 
-![](CaseStudy3_files/figure-html/plot_data-1.png)<!-- -->
+![](CaseStudy3_files/figure-html/plot_data-2.png)<!-- -->
+
+```r
+G3 <- G3 + scale_fill_binned(breaks = c(2.50e+08, 5.00e+08, 7.50e+08, 1.00e+09, 1.25e+09), labels = c(2500, 5000, 7500, 10000, 12500))
+
+
+
+
+G3Save <- ggsave("G3.png", width = 15, units = "in")
+```
 
 ## Conclusions
