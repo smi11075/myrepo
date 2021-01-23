@@ -1,7 +1,7 @@
 ---
 title: "CASE STUDY 3"
 author: "Ted Smith"
-date: "January 21, 2021"
+date: "January 22, 2021"
 output:
   html_document:  
     keep_md: true
@@ -33,7 +33,6 @@ _Place Task Background Here_
 ```r
 # Use this R-Chunk to clean & wrangle your data!
 
-
 Distinct <- data %>% 
   distinct(country, continent) %>% 
   group_by(continent) %>% 
@@ -54,6 +53,33 @@ Distinct
 ## 3 Asia                33
 ## 4 Europe              30
 ## 5 Oceania              2
+```
+
+```r
+PopYear <- data %>% 
+  group_by(year) 
+
+PopYear <- aggregate(PopYear$pop, by=list(year=PopYear$year), FUN=sum)
+  
+names(PopYear) = c("Year", "Population")
+
+PopYear
+```
+
+```
+##    Year Population
+## 1  1952 2406957150
+## 2  1957 2664404580
+## 3  1962 2899782974
+## 4  1967 3217478384
+## 5  1972 3576977158
+## 6  1977 3930045807
+## 7  1982 4289436840
+## 8  1987 4691477418
+## 9  1992 5110710260
+## 10 1997 5515204472
+## 11 2002 5886977579
+## 12 2007 6251013179
 ```
 
 ```r
@@ -85,6 +111,8 @@ NoKU
 
 ```r
 # Use this R-Chunk to plot & visualize your data!
+
+## Qualitative
 G1 <- ggplot(data = Distinct,
              mapping = aes(x = Continent,
                            y = CountryCount,
@@ -93,8 +121,8 @@ G1 <- ggplot(data = Distinct,
   theme_bw()+
   labs(x = 'Continent',
        y = 'Number of Countries',
-       title = 'Case Study 3',
-       subtitle = 'Number of Countries Per Continent',
+       title = 'Number of Countries Per Continent',
+       subtitle = 'Case Study 3',
        caption = 'Qualitative')
 
 G1
@@ -104,8 +132,60 @@ G1
 
 ```r
 G1Save <- ggsave("G1.png", width = 15, units = "in")
-#Base Graph
+
+
+
+## Quantitative
+G2 <- ggplot(data = PopYear,
+             mapping = aes(x = Year,
+                           y = Population)) +
+  geom_line() +
+  geom_point() +
+  scale_x_continuous(breaks = c(1952, 1957, 1962, 1967, 1972, 1977, 1982, 1987, 1992, 1997, 2002, 2007)) +
+  scale_y_continuous(breaks = c(3000000000, 4000000000, 5000000000, 6000000000), labels = c(3, 4, 5, 6)) +
+  labs(y = "Population (Billion)",
+       x = "Year",
+       title = "World Population per Year",
+       subtitle = "Case Study 3",
+       caption = 'Quantitative') +
+  theme_light()
+  
+
+G2
+```
+
+![](CaseStudy3_files/figure-html/plot_data-2.png)<!-- -->
+
+```r
+G2Save <- ggsave("G2.png", width = 15, units = "in")
+
+
+#Bivariate
 G3 <- ggplot(data = NoKU,
+             mapping = aes(x = year,
+                           y = gdpPercap,
+                           fill = continent)) +
+  
+  geom_col() +
+  labs(x = 'Year',
+       y = 'GDP Per Capita',
+       title = 'GDP of Each Continent',
+       subtitle = 'Case Study 3',
+       caption = 'Bivariate' ) +
+  scale_x_continuous(breaks = c(1952, 1957, 1962, 1967, 1972, 1977, 1982, 1987, 1992, 1997, 2002, 2007)) +
+  scale_y_continuous(breaks = c(250000, 500000, 750000, 1000000, 1250000, 1500000)) +
+  theme_light()
+               
+G3
+```
+
+![](CaseStudy3_files/figure-html/plot_data-3.png)<!-- -->
+
+```r
+G3Save <- ggsave("G3.png", width = 15, units = "in")
+
+## Life Exp vs. GDP
+G4 <- ggplot(data = NoKU,
        mapping = aes(x = lifeExp,
                      y = gdpPercap,
                      color = continent,
@@ -117,24 +197,21 @@ G3 <- ggplot(data = NoKU,
   #Labels
   labs(x = "Life Expectancy",
                 y = "GDP Per Capita",
-                title = "Case Study 3",
-                subtitle = "A Look at Life Expectancy and GDP Per Capita*",
+                title = "A Look at Life Expectancy and GDP Per Capita*",
+                subtitle = "Case Study 3",
                 caption = "*Sans Kuwait",
                 color = "Continent",
-                size = "Population (100k)") 
+                size = "Population (100k)") +
+  scale_size_area(breaks = c(250000000,500000000,750000000,1000000000,1250000000), labels = c(2500, 5000, 7500, 10000, 12500))
 
-G3
+G4
 ```
 
-![](CaseStudy3_files/figure-html/plot_data-2.png)<!-- -->
+![](CaseStudy3_files/figure-html/plot_data-4.png)<!-- -->
 
 ```r
-G3 <- G3 + scale_fill_binned(breaks = c(2.50e+08, 5.00e+08, 7.50e+08, 1.00e+09, 1.25e+09), labels = c(2500, 5000, 7500, 10000, 12500))
-
-
-
-
-G3Save <- ggsave("G3.png", width = 15, units = "in")
+G4Save <- ggsave("G4.png", width = 15, units = "in")
 ```
 
-## Conclusions
+## Expanation of Graphs 1,2,& 3
+The first graph is showing how many countries per continent. For this I had to learn the distinct function in order to find the unique names from the dataframe. In the second graph, I learned the aggregate function in order to add together each of the populations from each country each year. The third graph is looking at Global GDP broken down by continent.

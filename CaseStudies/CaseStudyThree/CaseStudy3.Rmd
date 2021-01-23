@@ -121,10 +121,10 @@ G3 <- ggplot(data = NoKU,
   
   geom_col() +
   labs(x = 'Year',
-  y = 'GDP Per Capita',
-  title = 'GDP of Each Continent',
-  subtitle = 'Case Study 3',
-  caption = 'Bivariate' ) +
+       y = 'GDP Per Capita',
+       title = 'GDP of Each Continent',
+       subtitle = 'Case Study 3',
+       caption = 'Bivariate' ) +
   scale_x_continuous(breaks = c(1952, 1957, 1962, 1967, 1972, 1977, 1982, 1987, 1992, 1997, 2002, 2007)) +
   scale_y_continuous(breaks = c(250000, 500000, 750000, 1000000, 1250000, 1500000)) +
   theme_light()
@@ -165,4 +165,5 @@ G4Save <- ggsave("G4.png", width = 15, units = "in")
 
 ```
 
-## Conclusions
+## Expanation of Graphs 1,2,& 3
+The first graph is showing how many countries per continent. For this I had to learn the distinct function in order to find the unique names from the dataframe. In the second graph, I learned the aggregate function in order to add together each of the populations from each country each year. The third graph is looking at Global GDP broken down by continent.
